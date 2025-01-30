@@ -3,7 +3,11 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from src.api.dependencies import auth_service
-from src.schemas.author import AuthorSchemaAdd, AuthorSchemaDelete
+from src.schemas.author import (
+    AuthorSchemaAdd, 
+    AuthorSchemaDelete, 
+    AuthorSchemaUpdate,
+)
 from src.services.author import AuthorService
 
 
@@ -34,3 +38,11 @@ async def delete_one(
 ):
     author = await author_service.delete_one(author_id)
     return author
+
+@router.patch("")
+async def update_one(
+    author: AuthorSchemaUpdate,
+    author_service: Annotated[AuthorService, Depends(auth_service)],
+):
+    author_id = await author_service.update_one(author)
+    return author_id

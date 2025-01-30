@@ -1,4 +1,4 @@
-from src.schemas.author import AuthorSchemaAdd, AuthorSchemaDelete
+from src.schemas.author import AuthorSchemaAdd, AuthorSchemaDelete, AuthorSchemaUpdate
 
 from src.utils.repository import AbstractRepository
 
@@ -20,3 +20,8 @@ class AuthorService:
         author_id = author_id.model_dump()["id"]
         author = await self.author_repo.delete_one(author_id)
         return author
+    
+    async def update_one(self, author: AuthorSchemaUpdate):
+        author_dict = author.model_dump()
+        author_id = await self.author_repo.update_one(author_dict)
+        return author_id
