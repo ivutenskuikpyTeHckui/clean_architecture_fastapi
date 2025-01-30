@@ -23,8 +23,7 @@ async def add_one(
     book_service: Annotated[BookService, Depends(book_service)],
     author_ids: AuthorForBookSchema = None,
 ):
-    kwargs = author_ids.model_dump()
-    book_id = await book_service.add_one(book, **kwargs)
+    book_id = await book_service.add_one(book, author_ids)
     return {"book_id": book_id}
 
 
