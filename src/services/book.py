@@ -1,4 +1,9 @@
-from src.schemas.book import BookSchemaAdd, BookSchemaDelete, BookSchemaUpdate
+from src.schemas.book import (
+    BookSchemaAdd, 
+    BookSchemaDelete, 
+    BookSchemaUpdate, 
+    AuthorForBookSchema,
+)
 
 from src.utils.repository import AbstractRepository
 
@@ -7,7 +12,8 @@ class BookService:
     def __init__(self, book_repo: AbstractRepository):
         self.book_repo: AbstractRepository = book_repo()
 
-    async def add_one(self, book: BookSchemaAdd, **kwargs):
+    async def add_one(self, book: BookSchemaAdd, author_ids: AuthorForBookSchema):
+        kwargs = author_ids.model_dump()
         book_dict = book.model_dump()
         book_id = await self.book_repo.add_one(book_dict, **kwargs)
         return book_id
