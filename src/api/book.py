@@ -8,8 +8,8 @@ from src.services.book import BookService
 
 
 router = APIRouter(
-    prefix="/book",
-    tags=["Book"],
+    prefix="/books",
+    tags=["Books"],
 )
 
 @router.post("")
