@@ -8,8 +8,8 @@ from src.services.author import AuthorService
 
 
 router = APIRouter(
-    prefix="/author",
-    tags=["Author"]
+    prefix="/authors",
+    tags=["Authors"]
 )
 
 @router.post("")
