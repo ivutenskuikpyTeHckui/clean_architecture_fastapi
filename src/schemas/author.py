@@ -13,5 +13,5 @@ class AuthorSchemaDelete(AuthorSchemaBase):
     id: int
 
 class AuthorSchemaUpdate(AuthorSchemaBase):
-    id: Optional[int | None]
-    name: Optional[str | None]
+    id: int 
+    name: str
