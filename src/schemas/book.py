@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import List
 
 from pydantic import BaseModel
 
@@ -16,3 +16,6 @@ class AuthorForBookSchema(BaseModel):
 class BookSchemaDelete(BookSchemaBase):
     id: int
 
+class BookSchemaUpdate(BookSchemaBase):
+    id: int
+    title: str
