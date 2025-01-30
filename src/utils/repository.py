@@ -15,7 +15,11 @@ class AbstractRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def delete_one(self, instance_id:int):
+    async def delete_one(self, instance_id: int):
+        raise NotImplementedError
+    
+    @abstractmethod
+    async def update_one(self, id: int, data: dict):
         raise NotImplementedError
     
 
@@ -37,10 +41,13 @@ class SQLAlchemyRepository(AbstractRepository):
         
     async def delete_one(self, instance_id: int):
         async with async_session_maker() as session:
-            print(instance_id)
             instance = await session.get(self.model, instance_id)
-            print(instance)
             await session.delete(instance)
             await session.commit()
 
-            
+    async def update_one(self, data: dict):
+        async with async_session_maker() as session:
+            updated_instance = self.model(**data)
+            stmt = await session.merge(updated_instance)
+            await session.commit()
+            return updated_instance.id
