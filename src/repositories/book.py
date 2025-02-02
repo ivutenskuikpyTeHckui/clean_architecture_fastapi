@@ -14,7 +14,6 @@ class BookRepository(SQLAlchemyRepository):
 
     async def add_one(self, data:dict, **kwargs) -> int:
         author_ids = kwargs.get("author_ids")
-        print(author_ids, "hhi")
         if author_ids is None:
             return await super().add_one(data)
         else:
