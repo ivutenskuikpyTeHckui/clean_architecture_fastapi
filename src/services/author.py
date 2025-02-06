@@ -5,7 +5,7 @@ from src.utils.repository import AbstractRepository
 
 class AuthorService:
     def __init__(self, author_repo: AbstractRepository):
-        self.author_repo: AbstractRepository = author_repo()
+        self.author_repo = author_repo
 
     async def add_one(self, author: AuthorSchemaAdd):
         authors_dict = author.model_dump()

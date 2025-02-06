@@ -10,7 +10,7 @@ from src.utils.repository import AbstractRepository
 
 class BookService:
     def __init__(self, book_repo: AbstractRepository):
-        self.book_repo: AbstractRepository = book_repo()
+        self.book_repo = book_repo
 
     async def add_one(self, book: BookSchemaAdd, author_ids: AuthorForBookSchema):
         kwargs = author_ids.model_dump()

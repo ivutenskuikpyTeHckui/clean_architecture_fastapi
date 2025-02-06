@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from sqlalchemy import insert, select
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.database import async_session_maker
 
@@ -26,28 +27,27 @@ class AbstractRepository(ABC):
 class SQLAlchemyRepository(AbstractRepository):
     model = None
 
+    def __init__(self, session:AsyncSession):
+        self.session = session
+
     async def add_one(self, data: dict, **kwargs ) -> int:
-        async with async_session_maker() as session:
-            instance = self.model(**data)
-            session.add(instance)
-            await session.commit()
-            await session.refresh(instance)
-            return instance.id
+        instance = self.model(**data)
+        self.session.add(instance)
+        await self.session.commit()
+        await self.session.refresh(instance)
+        return instance.id
         
     async def get_all(self):
-        async with async_session_maker() as session:
-            result = await session.execute(select(self.model))
-            return result.scalars().all()
+        result = await self.session.execute(select(self.model))
+        return result.scalars().all()
         
     async def delete_one(self, instance_id: int):
-        async with async_session_maker() as session:
-            instance = await session.get(self.model, instance_id)
-            await session.delete(instance)
-            await session.commit()
+        instance = await self.session.get(self.model, instance_id)
+        await self.session.delete(instance)
+        await self.session.commit()
 
     async def update_one(self, data: dict):
-        async with async_session_maker() as session:
-            updated_instance = self.model(**data)
-            stmt = await session.merge(updated_instance)
-            await session.commit()
-            return updated_instance.id
+        updated_instance = self.model(**data)
+        stmt = await self.session.merge(updated_instance)
+        await self.session.commit()
+        return updated_instance.id
