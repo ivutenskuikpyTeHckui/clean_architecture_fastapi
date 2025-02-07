@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres_container_test
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: admin
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
+    networks:
+      - pg_network_test
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_container_test
+    ports:
+      - 5051:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgres
+    networks:
+      - pg_network_test
+
+networks:
+  pg_network_test:
+    driver: bridge
+
+volumes:
+  postgres_data_test:
+
