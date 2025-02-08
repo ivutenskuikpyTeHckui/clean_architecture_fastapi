@@ -1,0 +1,86 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:80"        # на хосте порт 8000 будет перенаправлен в контейнер (порт 80, который указан в Dockerfile)
+    environment:
+      - PYTHONPATH=/app   # убедимся, что переменная видна в контейнере (хотя она уже задана в Dockerfile)
+      # Пример переменных для подключения к базе данных
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=your_user
+      - DATABASE_PASSWORD=your_password
+      - DATABASE_NAME=your_db
+    depends_on:
+      - postgres
+      - pgadmin
+    networks:
+      - app-network
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres_container
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - 5051:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  # pgadmin_test:
+    # image: dpage/pgadmin4:latest
+    # container_name: pgadmin_container
+    # ports:
+      # - 5050:80
+    # environment:
+      # PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      # PGADMIN_DEFAULT_PASSWORD: admin
+    # depends_on:
+      # - postgres
+    # networks:
+      # - app-network
+# 
+  # postgres_test:
+    # image: postgres:14-alpine
+    # container_name: postgres_container_test
+    # ports:
+      # - 5435:5432
+    # environment:
+      # POSTGRES_PASSWORD: admin
+      # POSTGRES_USER: admin
+      # POSTGRES_DB: admin
+    # volumes:
+      # - postgres_data_test:/var/lib/postgresql/data
+    # networks:
+      # - pg_network_test
+
+
+networks:
+  app-network:
+    driver: bridge
+
+  # pg_network_test:
+  #   driver: bridge
+
+volumes:
+  postgres_data:
+  # postgres_data_test:
+
