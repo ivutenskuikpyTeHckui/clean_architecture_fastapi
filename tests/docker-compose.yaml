@@ -1,6 +1,17 @@
 version: '3.9'
 
 services:
+  app:
+    build: ..
+    container_name: fastapi_app_test
+    ports:
+      - "8000:80"        # на хосте порт 8000 будет перенаправлен в контейнер (порт 80, который указан в Dockerfile)
+    depends_on:
+      - postgres
+      - pgadmin
+    networks:
+      - app-network-test
+
   postgres:
     image: postgres:14-alpine
     container_name: postgres_container_test
@@ -13,7 +24,7 @@ services:
     volumes:
       - postgres_data_test:/var/lib/postgresql/data
     networks:
-      - pg_network_test
+      - app-network-test
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -26,10 +37,10 @@ services:
     depends_on:
       - postgres
     networks:
-      - pg_network_test
+      - app-network-test
 
 networks:
-  pg_network_test:
+  app-network-test:
     driver: bridge
 
 volumes:

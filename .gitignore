@@ -162,3 +162,6 @@ poetry.lock
 src/static
 .idea/
 migration/versions
+
+#USERS
+/secrets

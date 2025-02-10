@@ -1,32 +1,15 @@
-# import os 
-# from dotenv import load_dotenv
+import os 
 
 
-# load_dotenv()
+def read_secret(secret_name: str, default: str = None) -> str:
+    secret_path = f"/run/secrets/{secret_name}"
+    if os.path.exists(secret_path):
+        with open(secret_path, "r") as f:
+            return f.read().strip()
 
-# DB_HOST = os.environ.get("DB_HOST")
-# DB_PORT = os.environ.get("DB_PORT")
-# DB_NAME = os.environ.get("DB_NAME")
-# DB_USER = os.environ.get("DB_USER")
-# DB_PASS = os.environ.get("DB_PASS")
-
-# SECRET_AUTH = os.environ.get("SECRET_AUTH")
-
-# DB_HOST_TEST = os.environ.get("DB_HOST_TEST") 
-# DB_PORT_TEST = os.environ.get("DB_PORT_TEST") 
-# DB_NAME_TEST = os.environ.get("DB_NAME_TEST") 
-# DB_USER_TEST = os.environ.get("DB_USER_TEST") 
-# DB_PASS_TEST = os.environ.get("DB_PASS_TEST") 
-DB_HOST = "postgres"
-DB_PORT = "5432"
-DB_NAME = "clean_db"
-DB_USER = "admin"
-DB_PASS = "admin"
-
-SECRET_AUTH = "SECRET"
-
-DB_HOST_TEST = "localhost"
-DB_PORT_TEST = 5435
-DB_NAME_TEST = "clean_db_test"
-DB_USER_TEST = "admin"
-DB_PASS_TEST = "admin"
+DB_HOST = read_secret("db_host")
+DB_PORT = read_secret("db_port")
+DB_NAME = read_secret("db_name")
+DB_USER = read_secret("db_user")
+DB_PASS = read_secret("db_pass")
+SECRET_AUTH = read_secret("secret_auth")
