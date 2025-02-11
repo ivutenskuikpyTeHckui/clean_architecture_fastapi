@@ -13,6 +13,5 @@ class Author(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(50))
-    books: Mapped[List["Book"]] = relationship(secondary=Association_Author_Book.__tablename__, 
-                                                   back_populates="authors"
-                                                   )
+    books: Mapped[List["Book"]] = relationship(secondary=Association_Author_Book.__tablename__,
+                                               back_populates="authors")

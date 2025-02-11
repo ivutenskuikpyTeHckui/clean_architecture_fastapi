@@ -6,16 +6,10 @@ from src.models.author import Author
 from src.utils.repository import SQLAlchemyRepository
 
 
-
-
 class BookRepository(SQLAlchemyRepository):
     model = Book
 
-    async def add_one(
-            self, 
-            data: dict, 
-            **kwargs
-) -> int:
+    async def add_one(self, data: dict, **kwargs) -> int:
         author_ids = kwargs.get("author_ids")
         if author_ids is None:
             return await super().add_one(data)
@@ -27,10 +21,8 @@ class BookRepository(SQLAlchemyRepository):
             book.authors.extend(authors)
             self.session.add(book)
             return book.id
-    
-    async def get_all(
-            self,
-):
+
+    async def get_all(self):
         query = (
             select(
                 self.model

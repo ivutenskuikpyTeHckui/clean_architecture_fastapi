@@ -4,9 +4,9 @@ from fastapi import APIRouter, Depends
 
 from src.api.dependencies import book_service
 from src.schemas.book import (
-    BookSchemaAdd, 
-    AuthorForBookSchema, 
-    BookSchemaDelete, 
+    BookSchemaAdd,
+    AuthorForBookSchema,
+    BookSchemaDelete,
     BookSchemaUpdate,
 )
 from src.services.book import BookService
@@ -16,6 +16,7 @@ router = APIRouter(
     prefix="/books",
     tags=["Books"],
 )
+
 
 @router.post("")
 async def add_one(
@@ -34,6 +35,7 @@ async def get_all(
     books = await book_service.get_all()
     return books
 
+
 @router.delete("")
 async def delete_one(
     book_service: Annotated[BookService, Depends(book_service)],
@@ -41,6 +43,7 @@ async def delete_one(
 ):
     book = await book_service.delete_one(book_id)
     return book
+
 
 @router.patch("")
 async def update_one(

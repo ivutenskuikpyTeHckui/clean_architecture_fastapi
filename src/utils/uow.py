@@ -27,7 +27,7 @@ class AbstractUnitOfWork(ABC):
     @abstractmethod
     async def rollback(self):
         raise NotImplementedError
-    
+
 
 class SQLAlchemyUnitOfWork(AbstractUnitOfWork):
     def __init__(self, session: AsyncSession):

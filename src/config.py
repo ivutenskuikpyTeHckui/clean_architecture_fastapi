@@ -1,4 +1,4 @@
-import os 
+import os
 
 
 def read_secret(secret_name: str, default: str = None) -> str:
@@ -6,6 +6,7 @@ def read_secret(secret_name: str, default: str = None) -> str:
     if os.path.exists(secret_path):
         with open(secret_path, "r") as f:
             return f.read().strip()
+
 
 DB_HOST = read_secret("db_host")
 DB_PORT = read_secret("db_port")

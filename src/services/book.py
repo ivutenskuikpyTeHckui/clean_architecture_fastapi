@@ -1,7 +1,7 @@
 from src.schemas.book import (
-    BookSchemaAdd, 
-    BookSchemaDelete, 
-    BookSchemaUpdate, 
+    BookSchemaAdd,
+    BookSchemaDelete,
+    BookSchemaUpdate,
     AuthorForBookSchema,
 )
 
@@ -18,12 +18,12 @@ class BookService:
         async with self.uow as uow:
             book_id = await uow.books.add_one(book_dict, **kwargs)
             return book_id
-    
+
     async def get_all(self):
         async with self.uow as uow:
             books = await uow.books.get_all()
             return books
-    
+
     async def delete_one(self, book_id: BookSchemaDelete):
         book_id = book_id.model_dump()["id"]
         async with self.uow as uow:

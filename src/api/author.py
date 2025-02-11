@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends
 
 from src.api.dependencies import auth_service
 from src.schemas.author import (
-    AuthorSchemaAdd, 
-    AuthorSchemaDelete, 
+    AuthorSchemaAdd,
+    AuthorSchemaDelete,
     AuthorSchemaUpdate,
 )
 from src.services.author import AuthorService
@@ -16,6 +16,7 @@ router = APIRouter(
     tags=["Authors"]
 )
 
+
 @router.post("")
 async def add_one(
     author: AuthorSchemaAdd,
@@ -24,12 +25,14 @@ async def add_one(
     author_id = await author_service.add_one(author)
     return {"author_id": author_id}
 
+
 @router.get("")
 async def get_all(
     author_service: Annotated[AuthorService, Depends(auth_service)],
 ):
     authors = await author_service.get_all()
     return authors
+
 
 @router.delete("")
 async def delete_one(
@@ -38,6 +41,7 @@ async def delete_one(
 ):
     author = await author_service.delete_one(author_id)
     return author
+
 
 @router.patch("")
 async def update_one(
