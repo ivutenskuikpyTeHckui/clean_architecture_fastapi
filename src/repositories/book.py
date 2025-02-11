@@ -4,7 +4,6 @@ from sqlalchemy.orm import selectinload
 from src.models.book import Book
 from src.models.author import Author
 from src.utils.repository import SQLAlchemyRepository
-from src.db.database import async_session_maker
 
 
 
@@ -27,7 +26,6 @@ class BookRepository(SQLAlchemyRepository):
             authors = result.scalars().all()
             book.authors.extend(authors)
             self.session.add(book)
-            await self.session.commit()
             return book.id
     
     async def get_all(

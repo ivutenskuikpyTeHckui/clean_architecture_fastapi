@@ -1,27 +1,31 @@
 from src.schemas.author import AuthorSchemaAdd, AuthorSchemaDelete, AuthorSchemaUpdate
 
-from src.utils.repository import AbstractRepository
+from src.utils.uow import AbstractUnitOfWork
 
 
 class AuthorService:
-    def __init__(self, author_repo: AbstractRepository):
-        self.author_repo = author_repo
+    def __init__(self, uow: AbstractUnitOfWork):
+        self.uow = uow
 
     async def add_one(self, author: AuthorSchemaAdd):
         authors_dict = author.model_dump()
-        author_id = await self.author_repo.add_one(authors_dict)
-        return author_id
+        async with self.uow as uow:
+            author_id = await uow.authors.add_one(authors_dict)
+            return author_id
     
     async def get_all(self):
-        authors = await self.author_repo.get_all()
-        return authors
+        async with self.uow as uow:
+            authors =  await uow.authors.get_all()
+            return authors
     
     async def delete_one(self, author_id: AuthorSchemaDelete):
         author_id = author_id.model_dump()["id"]
-        author = await self.author_repo.delete_one(author_id)
-        return author
+        async with self.uow as uow:
+            author = await uow.authors.delete_one(author_id)
+            return author   
     
     async def update_one(self, author: AuthorSchemaUpdate):
         author_dict = author.model_dump()
-        author_id = await self.author_repo.update_one(author_dict)
-        return author_id
+        async with self.uow as uow:
+            author_id = await uow.authors.update_one(author_dict)
+            return author_id
