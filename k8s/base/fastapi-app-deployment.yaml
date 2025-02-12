@@ -48,5 +48,4 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: secret_auth
-
               # 
