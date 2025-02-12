@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin           # Имя Deployment для PgAdmin
+spec:
+  replicas: 1             # Запускаем один экземпляр
+  selector:
+    matchLabels:
+      app: pgadmin        # Метка для поиска Pod'ов, управляемых этим Deployment
+  template:
+    metadata:
+      labels:
+        app: pgadmin      # Присваиваем Pod метку app: pgadmin
+    spec:
+      containers:
+      - name: pgadmin
+        image: dpage/pgadmin4:latest  # Используем официальный образ pgAdmin
+        ports:
+        - containerPort: 80           # Внутренний порт, на котором работает pgAdmin
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: "admin@admin.com"      # Электронная почта по умолчанию для входа в pgAdmin
+        - name: PGADMIN_DEFAULT_PASSWORD
+          value: "admin"                # Пароль для входа

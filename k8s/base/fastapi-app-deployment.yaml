@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-app       # Имя Deployment для FastAPI-приложения
+spec:
+  replicas: 1             # Запускаем один экземпляр приложения
+  selector:
+    matchLabels:
+      app: fastapi-app    # Метка для поиска Pod'ов, управляемых этим Deployment
+  template:
+    metadata:
+      labels:
+        app: fastapi-app  # Присваиваем Pod метку app: fastapi-app
+    spec:
+      containers:
+      - name: fastapi-app
+        image: igoriodev/fastapi_app:v1.1  # Образ приложения, созданный по вашему Dockerfile
+        ports:
+        - containerPort: 80        # Внутренний порт, на котором приложение принимает запросы
+        env:
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets  # Ссылаемся на созданный Secret для получения db_host
+              key: db_host
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: db_port
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: db_name
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: db_user
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: db_pass
+        - name: SECRET_AUTH
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: secret_auth
+
+              # 
