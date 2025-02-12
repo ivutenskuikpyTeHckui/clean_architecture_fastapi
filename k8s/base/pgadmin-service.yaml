@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin-service   # Имя сервиса для PgAdmin
+spec:
+  selector:
+    app: pgadmin         # Сервис связывается с Pod, имеющим метку app: pgadmin
+  ports:
+    - protocol: TCP
+      port: 5051       # Внешний порт, по которому происходит доступ к PgAdmin
+      targetPort: 80   # Внутренний порт контейнера PgAdmin
+  type: NodePort         # NodePort позволяет доступ к сервису снаружи кластера

@@ -165,3 +165,4 @@ migration/versions
 
 #USERS
 /secrets
+/.vscode
