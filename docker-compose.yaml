@@ -5,7 +5,7 @@ services:
     build: .
     container_name: fastapi_app
     ports:
-      - "8000:80"        # на хосте порт 8000 будет перенаправлен в контейнер (порт 80, который указан в Dockerfile)
+      - "8000:80"
     secrets:
       - db_host
       - db_port
