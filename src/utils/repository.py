@@ -31,6 +31,8 @@ class SQLAlchemyRepository(AbstractRepository):
     async def add_one(self, data: dict, **kwargs) -> int:
         instance = self.model(**data)
         self.session.add(instance)
+        await self.session.flush()
+        return instance.id
 
     async def get_all(self):
         result = await self.session.execute(select(self.model))
@@ -38,7 +40,10 @@ class SQLAlchemyRepository(AbstractRepository):
 
     async def delete_one(self, instance_id: int):
         instance = await self.session.get(self.model, instance_id)
+        if instance is None:
+            return None
         await self.session.delete(instance)
+        return instance 
 
     async def update_one(self, data: dict):
         updated_instance = self.model(**data)
